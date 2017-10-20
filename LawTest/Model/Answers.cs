@@ -17,7 +17,7 @@ namespace LawTest.Model
                                         Select(task => new Answer{ CorrectAnswer = task.CorrectAnswer}));
         }
 
-        public List<Answer> Answers { get; }
+        public List<Answer> AnswersList { get; }
 
         public void EditAnswer(int answerIndex, int chosenAnswer)
         {
@@ -28,7 +28,7 @@ namespace LawTest.Model
 
     public class Answer
     {
-        public int ChosenAnswer { get; set; };
-        public int CorrectAnswer { get; set; };
+        public int ChosenAnswer { get; set; }
+        public int CorrectAnswer { get; set; }
     }
 }
