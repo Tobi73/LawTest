@@ -21,7 +21,7 @@ namespace LawTest.BLL
                         FindAll(answer => answer.ChosenAnswer == answer.CorrectAnswer).Count;
         }
 
-        public Mark GetMark(double correctAnswers, double tasksCount)
+        Mark GetMark(double correctAnswers, double tasksCount)
         {
             var correctPercentage = correctAnswers / (tasksCount / 100.0);
             if (correctPercentage < 30.0) return Mark.UNSATISFACTORY;

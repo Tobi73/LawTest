@@ -8,7 +8,6 @@ namespace LawTest.Model
 {
     public class Task
     {
-        public string TaskName { get; set; }
         public string TaskDescription { get; set; }
         public int CorrectAnswer { get; set; }
         public Dictionary<int, string> Choices { get; set; }
