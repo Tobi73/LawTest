@@ -61,8 +61,13 @@ namespace LawTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form1 f = new LawTest.Form1(comboBox1.SelectedItem as TestUnit);
-            f.ShowDialog();
+            if (comboBox1.SelectedIndex !=-1) {
+                Form1 f = new LawTest.Form1(comboBox1.SelectedItem as TestUnit);
+                f.ShowDialog();
+            } else
+            {
+                MessageBox.Show("Выберите тест", "Информация");
+            }
         }
     }
 }
