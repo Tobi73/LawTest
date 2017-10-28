@@ -46,7 +46,7 @@ namespace LawTest
                 radioButton4.Checked = false;
                 if(TaskNumber +1 == Tasks.Count)
                 {
-                    button1.Text = "Finish";
+                    button1.Text = "Финиш";
                 }
             } else
             {
