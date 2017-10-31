@@ -16,6 +16,7 @@ namespace LawTest
     {
 
         public List<TestUnit> TestUnits;
+        int font=9;
         public StartForm()
         {
             InitializeComponent();
@@ -62,12 +63,23 @@ namespace LawTest
         private void button1_Click(object sender, EventArgs e)
         {
             if (comboBox1.SelectedIndex !=-1) {
-                Form1 f = new LawTest.Form1(comboBox1.SelectedItem as TestUnit);
+                Form1 f = new LawTest.Form1(comboBox1.SelectedItem as TestUnit, font);
                 f.ShowDialog();
             } else
             {
                 MessageBox.Show("Выберите тест", "Информация");
             }
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            font = Convert.ToInt32( numericUpDown1.Value);
+            label1.Font = new Font(label1.Font.FontFamily, font);
+            label2.Font = new Font(label2.Font.FontFamily, font);
+            label3.Font = new Font(label3.Font.FontFamily, font);
+            numericUpDown1.Font = new Font(numericUpDown1.Font.FontFamily, font);
+            button1.Font = new Font(button1.Font.FontFamily, font);
+            comboBox1.Font = new Font(comboBox1.Font.FontFamily, font);
         }
     }
 }

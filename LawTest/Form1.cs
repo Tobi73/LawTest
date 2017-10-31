@@ -18,11 +18,13 @@ namespace LawTest
         Answers answers;
         TestProcesser ts;
         int taskNumber;
+        int font = 9;
 
-        public Form1(TestUnit testUnit)
+        public Form1(TestUnit testUnit, int _font)
         {
             this.testUnit = testUnit;
             InitializeComponent();
+            font = _font;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -30,6 +32,17 @@ namespace LawTest
             ts = new TestProcesser();
             answers = new Answers(testUnit);
             setTaskSettings();
+            label1.Font = new Font(label1.Font.FontFamily, font);
+            label2.Font = new Font(label2.Font.FontFamily, font);
+            label3.Font = new Font(label3.Font.FontFamily, font);
+            radioButton1.Font = new Font(radioButton1.Font.FontFamily, font);
+            radioButton2.Font = new Font(radioButton2.Font.FontFamily, font);
+            radioButton3.Font = new Font(radioButton3.Font.FontFamily, font);
+            radioButton4.Font = new Font(radioButton4.Font.FontFamily, font);
+            groupBox1.Font = new Font(groupBox1.Font.FontFamily, font);
+            groupBox2.Font = new Font(groupBox2.Font.FontFamily, font);
+            button1.Font = new Font(button1.Font.FontFamily, font);
+            button2.Font = new Font(button2.Font.FontFamily, font);
         }
 
         private void setTaskSettings()
@@ -79,6 +92,8 @@ namespace LawTest
                 answers.EditAnswer(taskNumber, answer);
                 taskNumber += 1;
                 setTaskSettings();
+                label2.Text = "";
+                label3.Text = "";
             } else
             {
                 MessageBox.Show("Выберите вариант ответа","Информация");
@@ -106,6 +121,7 @@ namespace LawTest
 
         private void button2_Click(object sender, EventArgs e)
         {
+            button1.Text = "Далее";
             if (taskNumber - 1 != -1)
             {
                 taskNumber--;

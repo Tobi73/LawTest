@@ -34,12 +34,13 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -98,25 +99,15 @@
             this.radioButton4.Text = "radioButton4";
             this.radioButton4.UseVisualStyleBackColor = true;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(477, 303);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(117, 32);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Далее";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Controls.Add(this.radioButton4);
             this.groupBox1.Controls.Add(this.radioButton3);
-            this.groupBox1.Location = new System.Drawing.Point(12, 81);
+            this.groupBox1.Location = new System.Drawing.Point(15, 91);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(298, 193);
+            this.groupBox1.Size = new System.Drawing.Size(481, 191);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Варианты ответов";
@@ -124,9 +115,9 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label1);
-            this.groupBox2.Location = new System.Drawing.Point(12, 12);
+            this.groupBox2.Location = new System.Drawing.Point(15, 12);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(582, 63);
+            this.groupBox2.Size = new System.Drawing.Size(664, 73);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Вопрос";
@@ -135,7 +126,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.label2.Location = new System.Drawing.Point(9, 325);
+            this.label2.Location = new System.Drawing.Point(12, 299);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(279, 13);
             this.label2.TabIndex = 8;
@@ -144,34 +135,58 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::LawTest.Properties.Resources.question1;
-            this.pictureBox1.Location = new System.Drawing.Point(399, 110);
+            this.pictureBox1.Location = new System.Drawing.Point(521, 103);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(158, 164);
+            this.pictureBox1.Size = new System.Drawing.Size(152, 152);
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.label3.Location = new System.Drawing.Point(12, 322);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(218, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Можно вернуться, нажав кнопку \"Назад\"";
+            // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(365, 303);
+            this.button2.Location = new System.Drawing.Point(465, 299);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(106, 32);
+            this.button2.Size = new System.Drawing.Size(108, 36);
             this.button2.TabIndex = 10;
             this.button2.Text = "Назад";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // button1
+            // 
+            this.button1.AllowDrop = true;
+            this.button1.Location = new System.Drawing.Point(579, 299);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(100, 36);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Далее";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(611, 347);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.label2);
+            this.ClientSize = new System.Drawing.Size(694, 351);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximumSize = new System.Drawing.Size(710, 390);
+            this.MinimumSize = new System.Drawing.Size(710, 390);
             this.Name = "Form1";
             this.Text = "Тестирование";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -192,12 +207,13 @@
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton3;
         private System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button1;
     }
 }
 
