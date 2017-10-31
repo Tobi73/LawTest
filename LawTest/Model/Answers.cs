@@ -14,10 +14,15 @@ namespace LawTest.Model
         {
             answers = new List<Answer>();
             answers.AddRange(testUnit.Tasks.
-                                        Select(task => new Answer{ CorrectAnswer = task.CorrectAnswer}));
+                                        Select(task => new Answer{ CorrectAnswer = task.CorrectAnswer,
+                                                                   ChosenAnswer = -1}));
         }
 
-        public List<Answer> AnswersList { get; }
+        public List<Answer> AnswersList { get
+            {
+                return answers;
+            }
+        }
 
         public void EditAnswer(int answerIndex, int chosenAnswer)
         {

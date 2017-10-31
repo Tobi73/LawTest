@@ -1,4 +1,5 @@
 ﻿using LawTest.Model;
+using LawTest.BLL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,52 +14,70 @@ namespace LawTest
 {
     public partial class Form1 : Form
     {
-        public TestUnit TestUnit { get; set; }
-        public int TaskNumber { get; set; }
-        public List<Model.Task> Tasks;
+        TestUnit testUnit;
+        Answers answers;
+        TestProcesser ts;
+        int taskNumber;
 
         public Form1(TestUnit testUnit)
         {
-            TestUnit = testUnit;
-            TaskNumber = 0;
-            Tasks = TestUnit.Tasks;
+            this.testUnit = testUnit;
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ts = new TestProcesser();
+            answers = new Answers(testUnit);
             setTaskSettings();
         }
 
         private void setTaskSettings()
         {
-            if (TaskNumber < Tasks.Count) {
-                var currentTask = Tasks[TaskNumber];
-                label1.Text = $"{TaskNumber + 1}. {currentTask.TaskDescription}";
-                radioButton1.Text = currentTask.Choices[0];
-                radioButton2.Text = currentTask.Choices[1];
-                radioButton3.Text = currentTask.Choices[2];
-                radioButton4.Text = currentTask.Choices[3];
+            if (taskNumber < testUnit.Tasks.Count) {
+                var currentTask = testUnit.Tasks[taskNumber];
+                var chosenAnswer = answers.AnswersList[taskNumber].ChosenAnswer;
+                label1.Text = taskNumber + " " + currentTask.TaskDescription;
 
-                radioButton1.Checked = false;
-                radioButton2.Checked = false;
-                radioButton3.Checked = false;
-                radioButton4.Checked = false;
-                if(TaskNumber +1 == Tasks.Count)
+                // Установка текста вариантов ответа
+                for(int i = 0; i < currentTask.Choices.Count; i++)
+                {
+                    GetButtonRef(i).Text = currentTask.Choices[i];
+                }
+
+                // Установка состояний ответов
+                if (chosenAnswer == -1)
+                {
+                    for (int i = 0; i < currentTask.Choices.Count; i++)
+                        GetButtonRef(i).Checked = false;
+                } else
+                {
+                    for (int i = 0; i < currentTask.Choices.Count; i++)
+                        if (i == chosenAnswer)
+                        {
+                            GetButtonRef(i).Checked = true;
+                        }
+                        else GetButtonRef(i).Checked = false;
+                }
+                
+                // Проверка на окончание теста
+                if(taskNumber +1 == testUnit.Tasks.Count)
                 {
                     button1.Text = "Финиш";
                 }
             } else
             {
-                MessageBox.Show("Тестирование завершено \r\nВсего вопросов: " + Tasks.Count + " \r\nПравильно: 0 ", "Информация");
+                MessageBox.Show("Тестирование завершено \r\nВсего вопросов: " + testUnit.Tasks.Count + " \r\nПравильно: 0 ", "Информация");
                 Close();
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (setAns()) {
-                TaskNumber += 1;
+            int answer = setAns();
+            if (answer != -1) {
+                answers.EditAnswer(taskNumber, answer);
+                taskNumber += 1;
                 setTaskSettings();
             } else
             {
@@ -66,15 +85,34 @@ namespace LawTest
             }
         }
 
-        private bool setAns()
+        private RadioButton GetButtonRef(int index)
         {
-            if (radioButton1.Checked || radioButton2.Checked || radioButton3.Checked || radioButton4.Checked)
+            switch(index)
             {
-                return true;
+                case 0: return radioButton1;
+                case 1: return radioButton2;
+                case 2: return radioButton3;
+                case 3: return radioButton4;
+                default: throw new Exception("Could not get reference to button");
             }
-            else
+        }
+
+        private int setAns()
+        {
+            for (int i = 0; i < testUnit.Tasks.Count; i++)
+                if (GetButtonRef(i).Checked) return i;
+            return -1;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (taskNumber - 1 != -1)
             {
-                return false;
+                taskNumber--;
+                setTaskSettings();
+            } else
+            {
+                MessageBox.Show("Вы уже вернулись в начало теста", "Информация");
             }
         }
     }
