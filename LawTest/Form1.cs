@@ -57,6 +57,10 @@ namespace LawTest
                 {
                     GetButtonRef(i).Text = currentTask.Choices[i];
                 }
+                for(int i = currentTask.Choices.Count; i < 4; i++)
+                {
+                    GetButtonRef(i).Visible = false;
+                }
 
                 // Установка состояний ответов
                 if (chosenAnswer == -1)
@@ -80,7 +84,11 @@ namespace LawTest
                 }
             } else
             {
-                MessageBox.Show("Тестирование завершено \r\nВсего вопросов: " + testUnit.Tasks.Count + " \r\nПравильно: 0 ", "Информация");
+                var mark = ts.GetResult(answers);
+                var correctAnswers = ts.CalculateAnswers(answers);
+                var incorrectAnswers = testUnit.Tasks.Count - correctAnswers;
+                var tasksNum = testUnit.Tasks.Count;
+                MessageBox.Show($"Тестирование завершено \r\nВсего вопросов: {tasksNum} \r\nПравильно: {correctAnswers} ", "Информация");
                 Close();
             }
         }
@@ -114,16 +122,19 @@ namespace LawTest
 
         private int setAns()
         {
-            for (int i = 0; i < testUnit.Tasks.Count; i++)
+            for (int i = 0; i < testUnit.Tasks[taskNumber].Choices.Count; i++)
                 if (GetButtonRef(i).Checked) return i;
             return -1;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            var answer = setAns();
             button1.Text = "Далее";
             if (taskNumber - 1 != -1)
             {
+                if (answer != -1)
+                    answers.EditAnswer(taskNumber, answer);
                 taskNumber--;
                 setTaskSettings();
             } else

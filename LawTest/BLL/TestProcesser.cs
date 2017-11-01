@@ -15,7 +15,7 @@ namespace LawTest.BLL
             return GetMark(correctAnswersCount, answers.AnswersList.Count);
         }
 
-        int CalculateAnswers(Answers answers)
+        public int CalculateAnswers(Answers answers)
         {
             return answers.AnswersList.
                         FindAll(answer => answer.ChosenAnswer == answer.CorrectAnswer).Count;
