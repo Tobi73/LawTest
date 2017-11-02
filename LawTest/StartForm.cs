@@ -34,26 +34,25 @@ namespace LawTest
 
             foreach (var file in Directory.GetFiles("./Tests"))
             {
-                var lines = File.ReadAllLines(file);
+                var lines = File.ReadAllLines(file, Encoding.UTF8);
                 var filename = (file.Split('\\').Last());
-                // Переписать эту хуевую строчку
                 var testUnit = new TestUnit(filename.Remove(filename.LastIndexOf('.')));
                 foreach (var line in lines)
                 {
-                    var cells = line.Split(',');
-                    testUnit.AddTask(new Model.Task
+                    var cells = line.Split(';');
+                    var task = new Model.Task
                     {
-                        TaskDescription = cells[0],
-                        // Сделать через for, если вариантов ответа не всегда будет 4
-                        Choices = new Dictionary<int, string>
-                        {
-                            { 0, cells[1] },
-                            { 1, cells[2] },
-                            { 2, cells[3] },
-                            { 3, cells[4] }
-                        },
-                        CorrectAnswer = int.Parse(cells[5])
-                    });
+                        TaskDescription = cells[0]
+                    };
+                    var choises = new Dictionary<int, string>();
+                    for (var i = 1; i < cells.Length - 1; i++)
+                    {
+                        choises.Add(i - 1, cells[i]);
+                    }
+                    var correctAnswer = cells[cells.Length - 1];
+                    task.CorrectAnswer = int.Parse(correctAnswer);
+                    task.Choices = choises;
+                    testUnit.AddTask(task);
                 }
                 testUnits.Add(testUnit);
             }

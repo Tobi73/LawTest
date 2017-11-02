@@ -56,6 +56,7 @@ namespace LawTest
                 for(int i = 0; i < currentTask.Choices.Count; i++)
                 {
                     GetButtonRef(i).Text = currentTask.Choices[i];
+                    GetButtonRef(i).Visible = true;
                 }
                 for(int i = currentTask.Choices.Count; i < 4; i++)
                 {
