@@ -19,6 +19,7 @@ namespace LawTest
         TestProcesser ts;
         int taskNumber;
         int font = 9;
+        DataTable dt = new DataTable();
 
         public Form1(TestUnit testUnit, int _font)
         {
@@ -43,6 +44,11 @@ namespace LawTest
             groupBox2.Font = new Font(groupBox2.Font.FontFamily, font);
             button1.Font = new Font(button1.Font.FontFamily, font);
             button2.Font = new Font(button2.Font.FontFamily, font);
+
+            dt.Columns.Add("Вопрос");
+            dt.Columns.Add("Результат");
+            dt.Columns.Add("Правильный ответ");
+            dt.Columns.Add("Комментарий");
         }
 
         private void setTaskSettings()
@@ -77,9 +83,9 @@ namespace LawTest
                         }
                         else GetButtonRef(i).Checked = false;
                 }
-                
+
                 // Проверка на окончание теста
-                if(taskNumber +1 == testUnit.Tasks.Count)
+                if (taskNumber +1 == testUnit.Tasks.Count)
                 {
                     button1.Text = "Финиш";
                 }
@@ -89,20 +95,34 @@ namespace LawTest
                 var correctAnswers = ts.CalculateAnswers(answers);
                 var incorrectAnswers = testUnit.Tasks.Count - correctAnswers;
                 var tasksNum = testUnit.Tasks.Count;
-                MessageBox.Show($"Тестирование завершено \r\nВсего вопросов: {tasksNum} \r\nПравильно: {correctAnswers} ", "Информация");
+                //MessageBox.Show($"Тестирование завершено \r\nВсего вопросов: {tasksNum} \r\nПравильно: {correctAnswers} ", "Информация");
+
+
+
+                FormResult fr = new FormResult(dt, font, tasksNum, correctAnswers);
+                fr.ShowDialog();
+
                 Close();
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+
             int answer = setAns();
             if (answer != -1) {
+
+                //тут надо добавить инфу
+                dt.Rows.Add(label1.Text, 1, 1, 1);
+
+
                 answers.EditAnswer(taskNumber, answer);
                 taskNumber += 1;
                 setTaskSettings();
                 label2.Text = "";
                 label3.Text = "";
+
+
             } else
             {
                 MessageBox.Show("Выберите вариант ответа","Информация");
@@ -138,6 +158,9 @@ namespace LawTest
                     answers.EditAnswer(taskNumber, answer);
                 taskNumber--;
                 setTaskSettings();
+
+                dt.Rows.RemoveAt(dt.Rows.Count - 1);
+
             } else
             {
                 MessageBox.Show("Вы уже вернулись в начало теста", "Информация");
