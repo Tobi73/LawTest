@@ -11,6 +11,6 @@ namespace LawTest.Model
         public string TaskDescription { get; set; }
         public int CorrectAnswer { get; set; }
         public Dictionary<int, string> Choices { get; set; }
-
+        public string Tip { get; set; }
     }
 }

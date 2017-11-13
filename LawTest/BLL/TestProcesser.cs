@@ -1,9 +1,6 @@
 ﻿using LawTest.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace LawTest.BLL
 {
@@ -28,6 +25,19 @@ namespace LawTest.BLL
             if (correctPercentage < 50.0) return Mark.SATISFACTORY;
             if (correctPercentage < 80.0) return Mark.GOOD;
             return Mark.EXCELLENT;
+        }
+
+        public void SaveResultToFile(Student student, TestUnit testUnit, Answers answers, long time)
+        {   
+            string fileText = $"Выполнил студент {student.FIO} из группы {student.Group}\r\n";
+            var i = 1;
+            foreach (var task in testUnit.Tasks)
+            {
+                fileText += $"{i}. {task.TaskDescription} - {answers.AnswersList[i-1].ChosenAnswer}\r\n";
+                i++;
+            }
+            Directory.CreateDirectory("./StudentsTests");
+            File.WriteAllText($"./StudentsTests/{DateTime.Now.ToString().Replace(":", "-")} {student.FIO}.txt", fileText);
         }
 
     }

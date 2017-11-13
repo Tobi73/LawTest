@@ -16,6 +16,7 @@ namespace LawTest
         int correctAnswers = 0;
         int tasksNum = 0;
         DataTable dt;
+
         public FormResult(DataTable _dt, int _font, int _tasksNum, int _correctAnswers)
         {
             InitializeComponent();
@@ -32,7 +33,7 @@ namespace LawTest
             label2.Font = new Font(label2.Font.FontFamily, font);
             dataGridView1.Font = new Font(dataGridView1.Font.FontFamily, font);
             ColorDT();
-            label2.Text = "Всего вопросов: " +tasksNum +" \r\nПравильно: "+correctAnswers;
+            label2.Text = "Всего вопросов: " + tasksNum + Environment.NewLine + "Правильно: " + correctAnswers;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -40,7 +41,7 @@ namespace LawTest
             ColorDT();
         }
 
-        private void ColorDT ()
+        private void ColorDT()
         {
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -50,7 +51,8 @@ namespace LawTest
                     dataGridView1.Rows[i].Cells[1].Style.BackColor = Color.LightGreen;
                     dataGridView1.Rows[i].Cells[2].Style.BackColor = Color.LightGreen;
                     dataGridView1.Rows[i].Cells[3].Style.BackColor = Color.LightGreen;
-                } else
+                }
+                else
                 {
                     dataGridView1.Rows[i].Cells[0].Style.BackColor = Color.LightCoral;
                     dataGridView1.Rows[i].Cells[1].Style.BackColor = Color.LightCoral;

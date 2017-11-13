@@ -15,8 +15,9 @@ namespace LawTest
     public partial class StartForm : Form
     {
 
-        public List<TestUnit> TestUnits;
+        public TestUnit TestUnit;
         int font=9;
+
         public StartForm()
         {
             InitializeComponent();
@@ -24,61 +25,80 @@ namespace LawTest
 
         private void StartForm_Load(object sender, EventArgs e)
         {
-            TestUnits = GetTestUnits();
-            comboBox1.Items.AddRange(TestUnits.ToArray());
+            TestUnit = GetTestUnit();
         }
 
-        private List<TestUnit> GetTestUnits()
+        private TestUnit GetTestUnit()
         {
-            var testUnits = new List<TestUnit>();
-
-            foreach (var file in Directory.GetFiles("./Tests"))
+            var file = "./Tests/Test1.csv";
+            var lines = File.ReadAllLines(file, Encoding.UTF8);
+            var testUnit = new TestUnit("Тест");
+            var rand = new Random();
+            var tasks = new List<Model.Task>();
+            foreach (var line in lines)
             {
-                var lines = File.ReadAllLines(file, Encoding.UTF8);
-                var filename = (file.Split('\\').Last());
-                var testUnit = new TestUnit(filename.Remove(filename.LastIndexOf('.')));
-                foreach (var line in lines)
+                var cells = line.Split(';');
+                var task = new Model.Task
                 {
-                    var cells = line.Split(';');
-                    var task = new Model.Task
-                    {
-                        TaskDescription = cells[0]
-                    };
-                    var choises = new Dictionary<int, string>();
-                    for (var i = 1; i < cells.Length - 1; i++)
-                    {
-                        choises.Add(i - 1, cells[i]);
-                    }
-                    var correctAnswer = cells[cells.Length - 1];
-                    task.CorrectAnswer = int.Parse(correctAnswer);
-                    task.Choices = choises;
-                    testUnit.AddTask(task);
+                    TaskDescription = cells[0]
+                };
+                var choises = new Dictionary<int, string>();
+                for (var i = 1; i < cells.Length - 2; i++)
+                {
+                    choises.Add(i - 1, cells[i]);
                 }
-                testUnits.Add(testUnit);
+                var correctAnswer = cells[cells.Length - 2];
+                task.CorrectAnswer = int.Parse(correctAnswer);
+                task.Tip = cells[cells.Length - 1];
+                task.Choices = choises;
+                tasks.Add(task);
             }
-            return testUnits;
+            var testTasks = GenerateTasks(tasks);
+            testUnit.Tasks = testTasks;
+            return testUnit;
+        }
+
+        private List<Model.Task> GenerateTasks(List<Model.Task> allTasks)
+        {
+            var rand = new Random();
+            var testTasks = new List<Model.Task>();
+
+            for (var i = 0; i < 15;)
+            {
+                var task = allTasks[rand.Next(allTasks.Count)];
+                if (!testTasks.Contains(task))
+                {
+                    testTasks.Add(task);
+                    i++;
+                }
+            }
+
+            return testTasks;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedIndex !=-1) {
-                Form1 f = new LawTest.Form1(comboBox1.SelectedItem as TestUnit, font);
-                f.ShowDialog();
-            } else
+            var studentFIO = textFIO.Text;
+            var studentGroup = textGroup.Text;
+            if (string.IsNullOrEmpty(studentFIO))
             {
-                MessageBox.Show("Выберите тест", "Информация");
+                MessageBox.Show("Введите имя");
             }
+            if (string.IsNullOrEmpty(studentGroup))
+            {
+                MessageBox.Show("Введите группу");
+            }
+            Form1 f = new Form1(TestUnit, font, studentFIO, studentGroup);
+            f.ShowDialog();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             font = Convert.ToInt32( numericUpDown1.Value);
             label1.Font = new Font(label1.Font.FontFamily, font);
-            label2.Font = new Font(label2.Font.FontFamily, font);
             label3.Font = new Font(label3.Font.FontFamily, font);
             numericUpDown1.Font = new Font(numericUpDown1.Font.FontFamily, font);
             button1.Font = new Font(button1.Font.FontFamily, font);
-            comboBox1.Font = new Font(comboBox1.Font.FontFamily, font);
         }
     }
 }

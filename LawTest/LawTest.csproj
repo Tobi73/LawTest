@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Model\Answers.cs" />
     <Compile Include="Model\Marks.cs" />
+    <Compile Include="Model\Student.cs" />
     <Compile Include="Model\Task.cs" />
     <Compile Include="Model\TestUnit.cs" />
     <Compile Include="Program.cs" />
@@ -117,6 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\question1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="StudentsTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

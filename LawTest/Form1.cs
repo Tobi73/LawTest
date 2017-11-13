@@ -1,37 +1,44 @@
 ﻿using LawTest.Model;
 using LawTest.BLL;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace LawTest
 {
     public partial class Form1 : Form
     {
-        TestUnit testUnit;
-        Answers answers;
-        TestProcesser ts;
+        TestUnit TestUnit;
+        Answers Answers;
+        TestProcesser TestProcessor;
         int taskNumber;
         int font = 9;
         DataTable dt = new DataTable();
+        Student student;
+        long StartTime;
+        Stopwatch Stopwatch;
 
-        public Form1(TestUnit testUnit, int _font)
+        public Form1(TestUnit testUnit, int _font, string studentFio, string studentGroup)
         {
-            this.testUnit = testUnit;
+            Stopwatch = new Stopwatch();
+            StartTime = Stopwatch.ElapsedMilliseconds;
+            TestUnit = testUnit;
             InitializeComponent();
             font = _font;
+            student = new Student
+            {
+                FIO = studentFio,
+                Group = studentGroup,
+                TestName = testUnit.TestName
+            };
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            ts = new TestProcesser();
-            answers = new Answers(testUnit);
+            TestProcessor = new TestProcesser();
+            Answers = new Answers(TestUnit);
             setTaskSettings();
             label1.Font = new Font(label1.Font.FontFamily, font);
             label2.Font = new Font(label2.Font.FontFamily, font);
@@ -53,18 +60,19 @@ namespace LawTest
 
         private void setTaskSettings()
         {
-            if (taskNumber < testUnit.Tasks.Count) {
-                var currentTask = testUnit.Tasks[taskNumber];
-                var chosenAnswer = answers.AnswersList[taskNumber].ChosenAnswer;
-                label1.Text = taskNumber + " " + currentTask.TaskDescription;
+            if (taskNumber < TestUnit.Tasks.Count)
+            {
+                var currentTask = TestUnit.Tasks[taskNumber];
+                var chosenAnswer = Answers.AnswersList[taskNumber].ChosenAnswer;
+                label1.Text = taskNumber + 1 + " " + currentTask.TaskDescription;
 
                 // Установка текста вариантов ответа
-                for(int i = 0; i < currentTask.Choices.Count; i++)
+                for (int i = 0; i < currentTask.Choices.Count; i++)
                 {
                     GetButtonRef(i).Text = currentTask.Choices[i];
                     GetButtonRef(i).Visible = true;
                 }
-                for(int i = currentTask.Choices.Count; i < 4; i++)
+                for (int i = currentTask.Choices.Count; i < 4; i++)
                 {
                     GetButtonRef(i).Visible = false;
                 }
@@ -74,7 +82,8 @@ namespace LawTest
                 {
                     for (int i = 0; i < currentTask.Choices.Count; i++)
                         GetButtonRef(i).Checked = false;
-                } else
+                }
+                else
                 {
                     for (int i = 0; i < currentTask.Choices.Count; i++)
                         if (i == chosenAnswer)
@@ -85,18 +94,19 @@ namespace LawTest
                 }
 
                 // Проверка на окончание теста
-                if (taskNumber +1 == testUnit.Tasks.Count)
+                if (taskNumber + 1 == TestUnit.Tasks.Count)
                 {
                     button1.Text = "Финиш";
                 }
-            } else
+            }
+            else
             {
-                var mark = ts.GetResult(answers);
-                var correctAnswers = ts.CalculateAnswers(answers);
-                var incorrectAnswers = testUnit.Tasks.Count - correctAnswers;
-                var tasksNum = testUnit.Tasks.Count;
+                var mark = TestProcessor.GetResult(Answers);
+                var correctAnswers = TestProcessor.CalculateAnswers(Answers);
+                var incorrectAnswers = TestUnit.Tasks.Count - correctAnswers;
+                var tasksNum = TestUnit.Tasks.Count;
                 //MessageBox.Show($"Тестирование завершено \r\nВсего вопросов: {tasksNum} \r\nПравильно: {correctAnswers} ", "Информация");
-
+                TestProcessor.SaveResultToFile(student, TestUnit, Answers, Stopwatch.ElapsedMilliseconds - StartTime);
 
 
                 FormResult fr = new FormResult(dt, font, tasksNum, correctAnswers);
@@ -110,28 +120,30 @@ namespace LawTest
         {
 
             int answer = setAns();
-            if (answer != -1) {
-
+            if (answer != -1)
+            {
+                var currentTask = TestUnit.Tasks[taskNumber];
                 //тут надо добавить инфу
-                dt.Rows.Add(label1.Text, 1, 1, 1);
+                dt.Rows.Add(label1.Text, currentTask.Choices[currentTask.CorrectAnswer], currentTask.Choices[answer], currentTask.Tip);
 
 
-                answers.EditAnswer(taskNumber, answer);
+                Answers.EditAnswer(taskNumber, answer);
                 taskNumber += 1;
                 setTaskSettings();
                 label2.Text = "";
                 label3.Text = "";
 
 
-            } else
+            }
+            else
             {
-                MessageBox.Show("Выберите вариант ответа","Информация");
+                MessageBox.Show("Выберите вариант ответа", "Информация");
             }
         }
 
         private RadioButton GetButtonRef(int index)
         {
-            switch(index)
+            switch (index)
             {
                 case 0: return radioButton1;
                 case 1: return radioButton2;
@@ -143,7 +155,7 @@ namespace LawTest
 
         private int setAns()
         {
-            for (int i = 0; i < testUnit.Tasks[taskNumber].Choices.Count; i++)
+            for (int i = 0; i < TestUnit.Tasks[taskNumber].Choices.Count; i++)
                 if (GetButtonRef(i).Checked) return i;
             return -1;
         }
@@ -155,13 +167,14 @@ namespace LawTest
             if (taskNumber - 1 != -1)
             {
                 if (answer != -1)
-                    answers.EditAnswer(taskNumber, answer);
+                    Answers.EditAnswer(taskNumber, answer);
                 taskNumber--;
                 setTaskSettings();
 
                 dt.Rows.RemoveAt(dt.Rows.Count - 1);
 
-            } else
+            }
+            else
             {
                 MessageBox.Show("Вы уже вернулись в начало теста", "Информация");
             }
