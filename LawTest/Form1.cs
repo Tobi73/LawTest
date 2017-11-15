@@ -109,7 +109,7 @@ namespace LawTest
                 TestProcessor.SaveResultToFile(student, TestUnit, Answers, Stopwatch.ElapsedMilliseconds - StartTime);
 
 
-                FormResult fr = new FormResult(dt, font, tasksNum, correctAnswers);
+                FormResult fr = new FormResult(dt, font, tasksNum, correctAnswers, TestProcessor.GetResult(Answers));
                 fr.ShowDialog();
 
                 Close();

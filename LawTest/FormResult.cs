@@ -16,8 +16,9 @@ namespace LawTest
         int correctAnswers = 0;
         int tasksNum = 0;
         DataTable dt;
+        Model.Mark Mark;
 
-        public FormResult(DataTable _dt, int _font, int _tasksNum, int _correctAnswers)
+        public FormResult(DataTable _dt, int _font, int _tasksNum, int _correctAnswers, Model.Mark mark)
         {
             InitializeComponent();
             dataGridView1.DataSource = _dt;
@@ -25,6 +26,7 @@ namespace LawTest
             font = _font;
             correctAnswers = _correctAnswers;
             tasksNum = _tasksNum;
+            Mark = mark;
         }
 
         private void FormResult_Load(object sender, EventArgs e)
@@ -34,6 +36,8 @@ namespace LawTest
             dataGridView1.Font = new Font(dataGridView1.Font.FontFamily, font);
             ColorDT();
             label2.Text = "Всего вопросов: " + tasksNum + Environment.NewLine + "Правильно: " + correctAnswers;
+            int m = (int)Mark;
+            labelMark.Text = m.ToString();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
