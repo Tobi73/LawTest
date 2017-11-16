@@ -136,7 +136,15 @@ namespace LawTest
                 //добавление вариантов
                 string answers = "";
                 for (int i = 0; i< currentTask.Choices.Count;i++) {
-                    answers += "\u2022";
+                    if (currentTask.Choices[currentTask.CorrectAnswer].ToString() == currentTask.Choices[i].ToString())
+                    {
+                        answers += "+";
+                    }
+                    else
+                    {
+                        // answers += "\u2022";
+                        answers += "-";
+                    }
                     answers += currentTask.Choices[i];
                     if (i+1 != currentTask.Choices.Count)
                     {

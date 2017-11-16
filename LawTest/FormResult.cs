@@ -38,6 +38,13 @@ namespace LawTest
             label2.Text = "Всего вопросов: " + tasksNum + Environment.NewLine + "Правильно: " + correctAnswers;
             int m = (int)Mark;
             labelMark.Text = m.ToString();
+
+
+            dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            dataGridView1.Columns[1].Width = 80;
+            dataGridView1.Columns[2].Width = 80;
+            dataGridView1.Columns[3].Width = 80;
+            dataGridView1.Columns[4].Width = 20;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -67,11 +74,7 @@ namespace LawTest
                     dataGridView1.Rows[i].Cells[4].Style.BackColor = Color.LightCoral;
                 }
                
-                dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-                dataGridView1.Columns[1].Width = 100;
-                dataGridView1.Columns[2].Width = 100;
-                dataGridView1.Columns[3].Width = 100;
-                dataGridView1.Columns[4].Width = 20;
+
             }
         }
     }
