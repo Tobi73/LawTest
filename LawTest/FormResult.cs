@@ -49,12 +49,14 @@ namespace LawTest
         {
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (dt.Rows[i][1].ToString() == dt.Rows[i][2].ToString())
+                // if (dt.Rows[i][1].ToString() == dt.Rows[i][2].ToString())
+                if (dt.Rows[i][4].ToString() == "+")
                 {
                     dataGridView1.Rows[i].Cells[0].Style.BackColor = Color.LightGreen;
                     dataGridView1.Rows[i].Cells[1].Style.BackColor = Color.LightGreen;
                     dataGridView1.Rows[i].Cells[2].Style.BackColor = Color.LightGreen;
                     dataGridView1.Rows[i].Cells[3].Style.BackColor = Color.LightGreen;
+                    dataGridView1.Rows[i].Cells[4].Style.BackColor = Color.LightGreen;
                 }
                 else
                 {
@@ -62,7 +64,14 @@ namespace LawTest
                     dataGridView1.Rows[i].Cells[1].Style.BackColor = Color.LightCoral;
                     dataGridView1.Rows[i].Cells[2].Style.BackColor = Color.LightCoral;
                     dataGridView1.Rows[i].Cells[3].Style.BackColor = Color.LightCoral;
+                    dataGridView1.Rows[i].Cells[4].Style.BackColor = Color.LightCoral;
                 }
+               
+                dataGridView1.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                dataGridView1.Columns[1].Width = 100;
+                dataGridView1.Columns[2].Width = 100;
+                dataGridView1.Columns[3].Width = 100;
+                dataGridView1.Columns[4].Width = 20;
             }
         }
     }

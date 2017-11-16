@@ -53,9 +53,10 @@ namespace LawTest
             button2.Font = new Font(button2.Font.FontFamily, font);
 
             dt.Columns.Add("Вопрос");
-            dt.Columns.Add("Результат");
+            dt.Columns.Add("Варианты ответов");
             dt.Columns.Add("Правильный ответ");
             dt.Columns.Add("Комментарий");
+            dt.Columns.Add("+");
         }
 
         private void setTaskSettings()
@@ -123,9 +124,27 @@ namespace LawTest
             if (answer != -1)
             {
                 var currentTask = TestUnit.Tasks[taskNumber];
-                //тут надо добавить инфу
-                dt.Rows.Add(label1.Text, currentTask.Choices[currentTask.CorrectAnswer], currentTask.Choices[answer], currentTask.Tip);
-
+                //результат, по которому красится
+                string flag = "";
+                if(currentTask.Choices[answer].ToString() == currentTask.Choices[currentTask.CorrectAnswer].ToString())
+                {
+                    flag = "+";
+                } else
+                {
+                    flag = "-";
+                }
+                //добавление вариантов
+                string answers = "";
+                for (int i = 0; i< currentTask.Choices.Count;i++) {
+                    answers += "\u2022";
+                    answers += currentTask.Choices[i];
+                    if (i+1 != currentTask.Choices.Count)
+                    {
+                        answers += "\r\n";
+                    }
+                }
+                //dt.Rows.Add(label1.Text, currentTask.Choices[currentTask.CorrectAnswer], currentTask.Choices[answer], currentTask.Tip,flag);
+                dt.Rows.Add(label1.Text, answers, currentTask.Choices[answer], currentTask.Tip, flag);
 
                 Answers.EditAnswer(taskNumber, answer);
                 taskNumber += 1;

@@ -84,12 +84,15 @@ namespace LawTest
             {
                 MessageBox.Show("Введите имя");
             }
-            if (string.IsNullOrEmpty(studentGroup))
+            else if (string.IsNullOrEmpty(studentGroup))
             {
                 MessageBox.Show("Введите группу");
             }
-            Form1 f = new Form1(TestUnit, font, studentFIO, studentGroup);
-            f.ShowDialog();
+            else
+            {
+                Form1 f = new Form1(TestUnit, font, studentFIO, studentGroup);
+                f.ShowDialog();
+            }
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -99,6 +102,9 @@ namespace LawTest
             label3.Font = new Font(label3.Font.FontFamily, font);
             numericUpDown1.Font = new Font(numericUpDown1.Font.FontFamily, font);
             button1.Font = new Font(button1.Font.FontFamily, font);
+            label4.Font = new Font(label4.Font.FontFamily, font);
+            label5.Font = new Font(label5.Font.FontFamily, font);
+
         }
     }
 }
