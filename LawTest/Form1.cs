@@ -13,17 +13,22 @@ namespace LawTest
         TestUnit TestUnit;
         Answers Answers;
         TestProcesser TestProcessor;
+        Student student;
+        Stopwatch Stopwatch;
+
         int taskNumber;
         int font = 9;
-        Student student;
-        long StartTime;
-        Stopwatch Stopwatch ;
-        bool TestFinished = false;
+        long startTime;
+        bool testFinished = false;
+
+        Mark mark;
+        int correctAnswers;
+        int incorrectAnswers;
 
         public Form1(TestUnit testUnit, int _font, string studentFio, string studentGroup)
         {
             Stopwatch = new Stopwatch();
-            StartTime = Stopwatch.ElapsedMilliseconds;
+            startTime = Stopwatch.ElapsedMilliseconds;
             TestUnit = testUnit;
             InitializeComponent();
             font = _font;
@@ -63,7 +68,7 @@ namespace LawTest
                 int chosenAnswer = Answers.AnswersList[taskNumber].ChosenAnswer;
                 label1.Text = taskNumber + 1 + " " + currentTask.TaskDescription;
 
-                tipLabel.Visible = TestFinished;
+                tipLabel.Visible = testFinished;
 
                 // Установка текста вариантов ответа
                 for (int i = 0; i < currentTask.Choices.Count; i++)
@@ -71,17 +76,21 @@ namespace LawTest
                     GetButtonRef(i).Text = currentTask.Choices[i];
                     GetButtonRef(i).Visible = true;
                     GetPictureBoxRef(i).Visible = false;
-                    if (TestFinished)
+                    if (testFinished)
                     {
+                        GetButtonRef(i).Enabled = false;
                         if (i == chosenAnswer)
                         {
                             GetPictureBoxRef(i).BackColor = Color.Red;
                             GetPictureBoxRef(i).Visible = true;
+                            tipLabel.Visible = true;
+                            tipLabel.Text = currentTask.Tip;
                         }
                         if (i == currentTask.CorrectAnswer)
                         {
                             GetPictureBoxRef(i).BackColor = Color.Green;
                             GetPictureBoxRef(i).Visible = true;
+                            tipLabel.Visible = false;
                         }
 
                     }
@@ -114,29 +123,61 @@ namespace LawTest
                 {
                     button1.Text = "Финиш";
                 }
+                if (taskNumber + 1 == TestUnit.Tasks.Count && testFinished)
+                {
+                    button1.Text = "Закончить";
+                }
             }
             else
             {
-                var mark = TestProcessor.GetResult(Answers);
-                var correctAnswers = TestProcessor.CalculateAnswers(Answers);
-                var incorrectAnswers = TestUnit.Tasks.Count - correctAnswers;
-                var tasksNum = TestUnit.Tasks.Count;
-                TestProcessor.SaveResultToFile(student, TestUnit, Answers, Stopwatch.ElapsedMilliseconds - StartTime);
-                TestFinished = true;
+                testFinished = true;
                 button1.Text = "Закончить";
                 taskNumber--;
+                var currentTask = TestUnit.Tasks[taskNumber];
+                int chosenAnswer = Answers.AnswersList[taskNumber].ChosenAnswer;
+                for (int i = 0; i < currentTask.Choices.Count; i++)
+                {
+                    GetButtonRef(i).Enabled = false;
+                        if (i == chosenAnswer)
+                        {
+                            GetPictureBoxRef(i).BackColor = Color.Red;
+                            GetPictureBoxRef(i).Visible = true;
+                            tipLabel.Visible = true;
+                            tipLabel.Text = currentTask.Tip;
+                        }
+                        if (i == currentTask.CorrectAnswer)
+                        {
+                            GetPictureBoxRef(i).BackColor = Color.Green;
+                            GetPictureBoxRef(i).Visible = true;
+                            tipLabel.Visible = false;
+                        }
+
+                }
+
+                mark = TestProcessor.GetResult(Answers);
+                correctAnswers = TestProcessor.CalculateAnswers(Answers);
+                incorrectAnswers = TestUnit.Tasks.Count - correctAnswers;
+
+                errorLabel.Text = $"{errorLabel.Text} {incorrectAnswers.ToString()}";
+                errorLabel.Visible = true;
+
+                correctAnswersLabel.Text = $"{correctAnswersLabel.Text} {correctAnswers.ToString()}";
+                correctAnswersLabel.Visible = true;
+
+                markHeaderLabel.Visible = true;
+                markLabel.Visible = true;
+                markLabel.Text = ((int)mark).ToString();
+                markLabel.Height = 50;
+                markLabel.Width = 30;
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (TestFinished)
+            if (testFinished && TestUnit.Tasks.Count - 1 == taskNumber)
             {
-                var mark = TestProcessor.GetResult(Answers);
-                var correctAnswers = TestProcessor.CalculateAnswers(Answers);
-                var incorrectAnswers = TestUnit.Tasks.Count - correctAnswers;
                 var tasksNum = TestUnit.Tasks.Count;
-                TestProcessor.SaveResultToFile(student, TestUnit, Answers, Stopwatch.ElapsedMilliseconds - StartTime);
+                TestProcessor.SaveResultToFile(student, TestUnit, Answers, Stopwatch.ElapsedMilliseconds - startTime);
                 Close();
             }
             int answer = setAns();
@@ -204,6 +245,11 @@ namespace LawTest
             {
                 MessageBox.Show("Вы уже вернулись в начало теста", "Информация");
             }
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }
