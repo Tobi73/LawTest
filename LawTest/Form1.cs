@@ -54,10 +54,13 @@ namespace LawTest
             radioButton4.Font = new Font(radioButton4.Font.FontFamily, font);
             groupBox1.Font = new Font(groupBox1.Font.FontFamily, font);
             groupBox2.Font = new Font(groupBox2.Font.FontFamily, font);
+            groupBox3.Font = new Font(groupBox3.Font.FontFamily, font);
             button1.Font = new Font(button1.Font.FontFamily, font);
             button2.Font = new Font(button2.Font.FontFamily, font);
+            tipLabel.Font = new Font(tipLabel.Font.FontFamily, font);
+            markLabel.Font = new Font(markLabel.Font.FontFamily, font);
         }
-
+        
         private void setTaskSettings()
         {
             if (taskNumber < TestUnit.Tasks.Count)
