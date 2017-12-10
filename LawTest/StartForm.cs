@@ -104,7 +104,8 @@ namespace LawTest
             button1.Font = new Font(button1.Font.FontFamily, font);
             label4.Font = new Font(label4.Font.FontFamily, font);
             label5.Font = new Font(label5.Font.FontFamily, font);
-
+            textFIO.Font = new Font(textFIO.Font.FontFamily, font);
+            textGroup.Font = new Font(textGroup.Font.FontFamily, font);
         }
     }
 }
