@@ -46,13 +46,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.correctAnswersLabel = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.timeLabel = new System.Windows.Forms.Label();
             this.markLabel = new System.Windows.Forms.Label();
             this.markHeaderLabel = new System.Windows.Forms.Label();
             this.errorLabel = new System.Windows.Forms.Label();
+            this.counterLabel = new System.Windows.Forms.Label();
+            this.timeCounter = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.answerIcon4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.answerIcon3)).BeginInit();
@@ -167,9 +168,8 @@
             // 
             // answerIcon1
             // 
-            this.answerIcon1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.answerIcon1.Image = global::LawTest.Properties.Resources.tick2;
-            this.answerIcon1.InitialImage = global::LawTest.Properties.Resources.tick2;
+            this.answerIcon1.BackColor = System.Drawing.SystemColors.Control;
+            this.answerIcon1.InitialImage = null;
             this.answerIcon1.Location = new System.Drawing.Point(5, 21);
             this.answerIcon1.Margin = new System.Windows.Forms.Padding(2);
             this.answerIcon1.Name = "answerIcon1";
@@ -251,6 +251,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.counterLabel);
             this.groupBox3.Controls.Add(this.timeLabel);
             this.groupBox3.Controls.Add(this.markLabel);
             this.groupBox3.Controls.Add(this.markHeaderLabel);
@@ -261,7 +262,7 @@
             this.groupBox3.Size = new System.Drawing.Size(158, 202);
             this.groupBox3.TabIndex = 13;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "groupBox3";
+            this.groupBox3.Text = "Информация";
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             // 
             // timeLabel
@@ -305,6 +306,19 @@
             this.errorLabel.TabIndex = 13;
             this.errorLabel.Text = "Ошибки:";
             this.errorLabel.Visible = false;
+            // 
+            // counterLabel
+            // 
+            this.counterLabel.AutoSize = true;
+            this.counterLabel.Location = new System.Drawing.Point(56, 29);
+            this.counterLabel.Name = "counterLabel";
+            this.counterLabel.Size = new System.Drawing.Size(35, 13);
+            this.counterLabel.TabIndex = 17;
+            this.counterLabel.Text = "label4";
+            // 
+            // timeCounter
+            // 
+            this.timeCounter.Tick += new System.EventHandler(this.timeCounter_Tick);
             // 
             // Form1
             // 
@@ -357,13 +371,14 @@
         private System.Windows.Forms.PictureBox answerIcon2;
         private System.Windows.Forms.PictureBox answerIcon1;
         private System.Windows.Forms.Label tipLabel;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label correctAnswersLabel;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label timeLabel;
         private System.Windows.Forms.Label markLabel;
         private System.Windows.Forms.Label markHeaderLabel;
         private System.Windows.Forms.Label errorLabel;
+        private System.Windows.Forms.Label counterLabel;
+        private System.Windows.Forms.Timer timeCounter;
     }
 }
 

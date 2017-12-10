@@ -19,6 +19,8 @@ namespace LawTest
         int taskNumber;
         int font = 9;
         long startTime;
+        //long timeRemaining = 1800000;
+        long timeRemaining = 5000;
         bool testFinished = false;
 
         Mark mark;
@@ -32,6 +34,12 @@ namespace LawTest
             TestUnit = testUnit;
             InitializeComponent();
             font = _font;
+            timeCounter.Interval = 1000;
+            timeCounter.Start();
+            TimeSpan t = TimeSpan.FromMilliseconds(timeRemaining);
+            counterLabel.Text = string.Format("{0:D2}:{1:D2}",
+                                    t.Minutes,
+                                    t.Seconds);
             student = new Student
             {
                 FIO = studentFio,
@@ -81,20 +89,21 @@ namespace LawTest
                         GetButtonRef(i).Enabled = false;
                         if (i == chosenAnswer)
                         {
-                            GetPictureBoxRef(i).BackColor = Color.Red;
                             GetPictureBoxRef(i).Visible = true;
+                            GetPictureBoxRef(i).Image = Properties.Resources.incorrect;
+                            GetPictureBoxRef(i).SizeMode = PictureBoxSizeMode.StretchImage;
                             tipLabel.Visible = true;
                             tipLabel.Text = currentTask.Tip;
                         }
                         if (i == currentTask.CorrectAnswer)
                         {
-                            GetPictureBoxRef(i).BackColor = Color.Green;
                             GetPictureBoxRef(i).Visible = true;
+                            GetPictureBoxRef(i).Image = Properties.Resources.correct;
+                            GetPictureBoxRef(i).SizeMode = PictureBoxSizeMode.StretchImage;
                             tipLabel.Visible = false;
                         }
-
                     }
-                    
+
                 }
                 for (int i = currentTask.Choices.Count; i < 4; i++)
                 {
@@ -137,18 +146,20 @@ namespace LawTest
                 int chosenAnswer = Answers.AnswersList[taskNumber].ChosenAnswer;
                 for (int i = 0; i < currentTask.Choices.Count; i++)
                 {
-                    GetButtonRef(i).Enabled = false;
+                        GetButtonRef(i).Enabled = false;
                         if (i == chosenAnswer)
                         {
-                            GetPictureBoxRef(i).BackColor = Color.Red;
                             GetPictureBoxRef(i).Visible = true;
+                            GetPictureBoxRef(i).Image = Properties.Resources.incorrect;
+                            GetPictureBoxRef(i).SizeMode = PictureBoxSizeMode.StretchImage;
                             tipLabel.Visible = true;
                             tipLabel.Text = currentTask.Tip;
                         }
                         if (i == currentTask.CorrectAnswer)
                         {
-                            GetPictureBoxRef(i).BackColor = Color.Green;
                             GetPictureBoxRef(i).Visible = true;
+                            GetPictureBoxRef(i).Image = Properties.Resources.correct;
+                            GetPictureBoxRef(i).SizeMode = PictureBoxSizeMode.StretchImage;
                             tipLabel.Visible = false;
                         }
 
@@ -183,7 +194,8 @@ namespace LawTest
             int answer = setAns();
             if (answer != -1)
             {
-                var currentTask = TestUnit.Tasks[taskNumber];
+                // Why?
+                // var currentTask = TestUnit.Tasks[taskNumber];
                 Answers.EditAnswer(taskNumber, answer);
                 taskNumber += 1;
                 setTaskSettings();
@@ -194,8 +206,18 @@ namespace LawTest
             }
             else
             {
-                MessageBox.Show("Выберите вариант ответа", "Информация");
+                if(testFinished)
+                {
+                    taskNumber += 1;
+                    setTaskSettings();
+                    label2.Text = "";
+                    label3.Text = "";
+                } else
+                {
+                    MessageBox.Show("Выберите вариант ответа", "Информация");
+                }
             }
+            
         }
 
         private RadioButton GetButtonRef(int index)
@@ -250,6 +272,25 @@ namespace LawTest
         private void groupBox3_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timeCounter_Tick(object sender, EventArgs e)
+        {
+            timeRemaining -= timeCounter.Interval;
+            if(timeRemaining == 0)
+            {
+                testFinished = true;
+                setTaskSettings();
+            }
+            TimeSpan t = TimeSpan.FromMilliseconds(timeRemaining);
+            counterLabel.Text = string.Format("{0:D2}:{1:D2}",
+                                    t.Minutes,
+                                    t.Seconds);
         }
     }
 }
