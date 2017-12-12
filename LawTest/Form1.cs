@@ -19,8 +19,8 @@ namespace LawTest
         int taskNumber;
         int font = 9;
         long startTime;
-        //long timeRemaining = 1800000;
-        long timeRemaining = 5000;
+        long timeRemaining = 1800000;
+        //long timeRemaining = 5000;
         bool testFinished = false;
 
         Mark mark;
@@ -90,21 +90,7 @@ namespace LawTest
                     if (testFinished)
                     {
                         GetButtonRef(i).Enabled = false;
-                        if (i == chosenAnswer)
-                        {
-                            GetPictureBoxRef(i).Visible = true;
-                            GetPictureBoxRef(i).Image = Properties.Resources.incorrect;
-                            GetPictureBoxRef(i).SizeMode = PictureBoxSizeMode.StretchImage;
-                            tipLabel.Visible = true;
-                            tipLabel.Text = currentTask.Tip;
-                        }
-                        if (i == currentTask.CorrectAnswer)
-                        {
-                            GetPictureBoxRef(i).Visible = true;
-                            GetPictureBoxRef(i).Image = Properties.Resources.correct;
-                            GetPictureBoxRef(i).SizeMode = PictureBoxSizeMode.StretchImage;
-                            tipLabel.Visible = false;
-                        }
+                        setQuestionResults(currentTask, i, chosenAnswer);
                     }
 
                 }
@@ -149,40 +135,10 @@ namespace LawTest
                 int chosenAnswer = Answers.AnswersList[taskNumber].ChosenAnswer;
                 for (int i = 0; i < currentTask.Choices.Count; i++)
                 {
-                        GetButtonRef(i).Enabled = false;
-                        if (i == chosenAnswer)
-                        {
-                            GetPictureBoxRef(i).Visible = true;
-                            GetPictureBoxRef(i).Image = Properties.Resources.incorrect;
-                            GetPictureBoxRef(i).SizeMode = PictureBoxSizeMode.StretchImage;
-                            tipLabel.Visible = true;
-                            tipLabel.Text = currentTask.Tip;
-                        }
-                        if (i == currentTask.CorrectAnswer)
-                        {
-                            GetPictureBoxRef(i).Visible = true;
-                            GetPictureBoxRef(i).Image = Properties.Resources.correct;
-                            GetPictureBoxRef(i).SizeMode = PictureBoxSizeMode.StretchImage;
-                            tipLabel.Visible = false;
-                        }
-
+                    setQuestionResults(currentTask, i, chosenAnswer);
                 }
 
-                mark = TestProcessor.GetResult(Answers);
-                correctAnswers = TestProcessor.CalculateAnswers(Answers);
-                incorrectAnswers = TestUnit.Tasks.Count - correctAnswers;
-
-                errorLabel.Text = $"{errorLabel.Text} {incorrectAnswers.ToString()}";
-                errorLabel.Visible = true;
-
-                correctAnswersLabel.Text = $"{correctAnswersLabel.Text} {correctAnswers.ToString()}";
-                correctAnswersLabel.Visible = true;
-
-                markHeaderLabel.Visible = true;
-                markLabel.Visible = true;
-                markLabel.Text = ((int)mark).ToString();
-                markLabel.Height = 50;
-                markLabel.Width = 30;
+                displayTestResults();
             }
         }
 
@@ -233,6 +189,44 @@ namespace LawTest
                 case 3: return radioButton4;
                 default: throw new Exception("Could not get reference to button");
             }
+        }
+
+        private void setQuestionResults(Task currentTask, int choiceIndex, int chosenAnswer)
+        {
+            if (choiceIndex == chosenAnswer)
+            {
+                GetPictureBoxRef(choiceIndex).Visible = true;
+                GetPictureBoxRef(choiceIndex).Image = Properties.Resources.incorrect;
+                GetPictureBoxRef(choiceIndex).SizeMode = PictureBoxSizeMode.StretchImage;
+                tipLabel.Visible = true;
+                tipLabel.Text = currentTask.Tip;
+            }
+            if (choiceIndex == currentTask.CorrectAnswer)
+            {
+                GetPictureBoxRef(choiceIndex).Visible = true;
+                GetPictureBoxRef(choiceIndex).Image = Properties.Resources.correct;
+                GetPictureBoxRef(choiceIndex).SizeMode = PictureBoxSizeMode.StretchImage;
+                tipLabel.Visible = false;
+            }
+        }
+
+        private void displayTestResults()
+        {
+            mark = TestProcessor.GetResult(Answers);
+            correctAnswers = TestProcessor.CalculateAnswers(Answers);
+            incorrectAnswers = TestUnit.Tasks.Count - correctAnswers;
+
+            errorLabel.Text = $"{errorLabel.Text} {incorrectAnswers.ToString()}";
+            errorLabel.Visible = true;
+
+            correctAnswersLabel.Text = $"{correctAnswersLabel.Text} {correctAnswers.ToString()}";
+            correctAnswersLabel.Visible = true;
+
+            markHeaderLabel.Visible = true;
+            markLabel.Visible = true;
+            markLabel.Text = ((int)mark).ToString();
+            markLabel.Height = 50;
+            markLabel.Width = 30;
         }
 
         private PictureBox GetPictureBoxRef(int index)
@@ -288,7 +282,9 @@ namespace LawTest
             if(timeRemaining == 0)
             {
                 testFinished = true;
+                displayTestResults();
                 setTaskSettings();
+                timeCounter.Stop();
             }
             TimeSpan t = TimeSpan.FromMilliseconds(timeRemaining);
             counterLabel.Text = string.Format("{0:D2}:{1:D2}",
