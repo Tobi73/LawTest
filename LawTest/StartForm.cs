@@ -92,6 +92,7 @@ namespace LawTest
             {
                 Form1 f = new Form1(TestUnit, font, studentFIO, studentGroup);
                 f.ShowDialog();
+                this.Close();
             }
         }
 

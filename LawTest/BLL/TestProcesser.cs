@@ -27,7 +27,7 @@ namespace LawTest.BLL
             return Mark.EXCELLENT;
         }
 
-        public void SaveResultToFile(Student student, TestUnit testUnit, Answers answers, long time)
+        public void SaveResultToFile(Student student, TestUnit testUnit, Answers answers, long time, int mark)
         {   
             string fileText = $"Выполнил студент {student.FIO} из группы {student.Group}\r\n";
             var i = 1;
@@ -36,6 +36,7 @@ namespace LawTest.BLL
                 fileText += $"{i}. {task.TaskDescription} - {answers.AnswersList[i-1].ChosenAnswer}\r\n";
                 i++;
             }
+            fileText += $"Оценка - {mark}";
             Directory.CreateDirectory("./StudentsTests");
             File.WriteAllText($"./StudentsTests/{DateTime.Now.ToString().Replace(":", "-")} {student.FIO}.txt", fileText);
         }
